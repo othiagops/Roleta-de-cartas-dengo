@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta de Cartas da Dengo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fasthtml-framework@latest/dist/fasthtml.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: #FFF4C8;
+            color: #DB6323;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #F74F35;
+            font-size: 24px;
+            margin: 20px;
+        }
+
+        .roleta-container {
+            position: relative;
+            margin: 0 auto;
+            width: 90%;
+            max-width: 350px;
+            height: 350px;
+        }
+
+        .roleta {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #ED7D50;
+            background: conic-gradient(
+                #FFF4C8 0% 8.33%, #FAD103 8.33% 16.66%, #F7A802 16.66% 25%, 
+                #F74F35 25% 33.33%, #ED7D50 33.33% 41.66%, #DB6323 41.66% 50%, 
+                #FFF4C8 50% 58.33%, #FAD103 58.33% 66.66%, #F7A802 66.66% 75%, 
+                #F74F35 75% 83.33%, #ED7D50 83.33% 91.66%, #DB6323 91.66% 100%
+            );
+            transform: rotate(0deg);
+            transition: transform 1s ease-out;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: #F74F35;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        #resultado {
+            margin: 30px auto;
+            font-size: 16px;
+            color: #DB6323;
+            max-width: 90%;
+            word-wrap: break-word;
+            text-align: justify;
+            line-height: 1.5;
+        }
+
+        .botao-girar {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #F7A802;
+            color: #FFF4C8;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .botao-girar:hover {
+            background-color: #F74F35;
+        }
+
+        .logo-dengo {
+            margin-top: 20px;
+        }
+
+        .logo-dengo img {
+            width: 120px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="fast-heading">Roleta de Cartas da Dengo</h1>
+    <div class="roleta-container fast-grid">
+        <div class="roleta" id="roleta"></div>
+        <div class="pointer"></div>
+    </div>
+    <button class="botao-girar fast-button" onclick="girarRoleta()">Girar a Roleta</button>
+    <div id="resultado" class="fast-box fast-center"></div>
+    <div class="logo-dengo">
+        <img src="https://lh6.googleusercontent.com/proxy/ypd_AIXCjas7qwwDapRhal-kc1X19j2CApQyxJjLYGbLzbCOp37aRwGVUojylC1ADeQyr64EZhgSmKnFgvV9Ut2UR3Sxj1RpVs0hbScYKVXObHCWmK-GhlSMSLcxI2EAWLvA-ba6XDzoyz8" alt="Logo da Dengo">
+    </div>
+
+    <script>
+        const mensagens = [
+            "Admiração – O que você mais admira nesta pessoa.",
+            "Gratidão por Você – Agradeça por algo especial que essa pessoa fez por você.",
+            "Memórias Inesquecíveis – Lembranças especiais que vocês viveram juntos.",
+            "Gestos que Marcam – Pequenas atitudes dessa pessoa que fazem a diferença.",
+            "Conexão Única – O que torna o vínculo de vocês especial.",
+            "Aconchego e Conforto – Como essa pessoa é um porto seguro para você.",
+            "Palavras que Acalmam – Algo que essa pessoa disse que te trouxe paz.",
+            "Celebrando Suas Conquistas – Parabenize por uma vitória recente.",
+            "Para os Momentos Bons e Ruins – Como é importante ter essa pessoa em todos os momentos.",
+            "A Melhor Versão de Mim – Como essa pessoa te ajuda a ser melhor.",
+            "Pequenos Momentos – Pequenos momentos compartilhados que significam muito.",
+            "Cuidado e Carinho – Como você valoriza o carinho que essa pessoa oferece."
+        ];
+
+        let anguloAtual = 0;
+
+        function girarRoleta() {
+            const roleta = document.getElementById("roleta");
+            const resultado = document.getElementById("resultado");
+
+            const voltas = Math.floor(Math.random() * 5) + 5; // Gira entre 5 e 9 voltas completas
+            const anguloExtra = Math.floor(Math.random() * 360); // Gira para uma posição aleatória
+            const anguloFinal = voltas * 360 + anguloExtra;
+
+            anguloAtual += anguloFinal; // Incrementa o ângulo para evitar padrões previsíveis
+
+            roleta.style.transition = "transform 1s ease-out";
+            roleta.style.transform = `rotate(${anguloAtual}deg)`;
+
+            setTimeout(() => {
+                const indexMensagem = Math.floor(((anguloAtual % 360) / 30) % mensagens.length);
+                resultado.innerText = mensagens[indexMensagem];
+            }, 1000); // Tempo igual à duração da transição
+        }
+    </script>
+</body>
+</html>
